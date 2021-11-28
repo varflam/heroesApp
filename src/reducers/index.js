@@ -3,7 +3,7 @@ const initialState = {
     heroesLoadingStatus: 'idle',
     filters: [],
     filtersLoadingStatus: 'idle',
-    activeFilter: 'all',
+    activeFilter: '',
     filteredHeroes: [],
     heroName: '',
     heroAbility: '',
@@ -48,20 +48,19 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeFilter: action.payload,
-            }
-        }
-        case 'FILTER_HEROES': {
-            return {
-                ...state,
-                filteredHeroes: state.activeFilter === 'all' ?
+                filteredHeroes: action.payload === 'all' ?
                                 state.heroes :
-                                state.heroes.filter(hero => hero.element === state.activeFilter)
+                                state.heroes.filter(hero => hero.element === action.payload)
             }
         }
         case 'HEROES_DELETE':
+            let newHeroList = state.heroes.filter(item => item.id !== action.payload);
             return {
                 ...state,
-                heroes: state.heroes.filter(item => item.id !== action.payload)
+                heroes: newHeroList,
+                filteredHeroes: state.activeFilter === 'all' ?
+                                newHeroList :
+                                newHeroList.filter(hero => hero.element === state.activeFilter)
             }
         case 'HERO_NAME_CHANGE': 
             return {
@@ -79,9 +78,13 @@ const reducer = (state = initialState, action) => {
                 heroElement: action.payload
             }
         case 'HERO_CREATE_NEW':
+            let newCreatedHeroList = [...state.heroes, action.payload];
             return {
                 ...state,
-                heroes: [...state.heroes, action.payload]
+                heroes: newCreatedHeroList,
+                filteredHeroes: state.activeFilter === 'all' ? 
+                                newCreatedHeroList : 
+                                newCreatedHeroList.filter(item => item.element === state.activeFilter)
             }
         default: return state
     }

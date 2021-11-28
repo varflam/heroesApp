@@ -3,12 +3,18 @@ import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
 import { heroeAbilityChange, heroNameChange, heroElementChange, heroCreateNew } from "../../actions";
 
+// Задача для этого компонента:
+// Реализовать создание нового героя с введенными данными. Он должен попадать
+// в общее состояние и отображаться в списке + фильтроваться
+// Уникальный идентификатор персонажа можно сгенерировать через uiid
+// Усложненная задача:
+// Персонаж создается и в файле json при помощи метода POST
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {heroName, heroAbility, heroElement } = useSelector(state => state);
+    const {heroName, heroAbility, heroElement, filters } = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -27,12 +33,24 @@ const HeroesAddForm = () => {
         };
         e.preventDefault();
         dispatch(heroCreateNew(newHero));
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero));
+        request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
+               .catch(err => console.log(err));
 
         dispatch(heroNameChange(''));
         dispatch(heroeAbilityChange(''));
         dispatch(heroElementChange(''));
     }
+
+    const renderOptions = (arr) => {
+        return arr.map(({name, label}) => {
+            // eslint-disable-next-line
+            if(name === 'all') return;
+
+            return <option key={name} value={name}>{label}</option>
+        })
+    }
+
+    const options = renderOptions(filters);
 
     return (
         <form 
@@ -74,10 +92,7 @@ const HeroesAddForm = () => {
                     id="element" 
                     name="element">
                     <option >Я владею элементом...</option>
-                    <option value='fire'>Огонь</option>
-                    <option value='water'>Вода</option>
-                    <option value='earth'>Земля</option>
-                    <option value='wind'>Воздух</option>
+                    {options}
                 </select>
             </div>
 

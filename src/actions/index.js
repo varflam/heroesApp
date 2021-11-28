@@ -43,12 +43,6 @@ export const filterSet = (filter) => {
     }
 }
 
-export const filterHeroes = () => {
-    return {
-        type: 'FILTER_HEROES'
-    }
-}
-
 export const heroesDelete = (id) => {
     return {
         type: 'HEROES_DELETE',

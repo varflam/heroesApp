@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
 import { useHttp } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
-import { filterFetched, filterFetchingError, filterFetching, filterSet, filterHeroes } from "../../actions";
+import { filterFetched, filterFetchingError, filterFetching, filterSet } from "../../actions";
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
 // Фильтры должны отображать только нужных героев при выборе
 // Активный фильтр имеет класс active
-// Изменять json-файл для удобства МОЖНО!
-// Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
 
@@ -46,10 +44,7 @@ const HeroesFilters = () => {
             return <button 
                     key={name}
                     id={name}
-                    onClick={() => {
-                        dispatch(filterSet(name));
-                        dispatch(filterHeroes());
-                    }}
+                    onClick={() => dispatch(filterSet(name))}
                     className={btnClass}>{label}</button>
         })
     }
