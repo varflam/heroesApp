@@ -19,20 +19,33 @@ export const heroesFetchingError = () => {
 
 export const filterFetching = () => {
     return {
-        type: 'FILTER_FETCHING'
+        type: 'FILTERS_FETCHING'
     }
 }
 
 export const filterFetched = (filters) => {
     return {
-        type: 'FILTER_FETCHED',
+        type: 'FILTERS_FETCHED',
         payload: filters
     }
 }
 
 export const filterFetchingError = () => {
     return {
-        type: 'FILTER_FETCHING_ERROR'
+        type: 'FILTERS_FETCHING_ERROR'
+    }
+}
+
+export const filterSet = (filter) => {
+    return {
+        type: 'FILTER_SET',
+        payload: filter
+    }
+}
+
+export const filterHeroes = () => {
+    return {
+        type: 'FILTER_HEROES'
     }
 }
 

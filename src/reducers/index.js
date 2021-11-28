@@ -3,6 +3,8 @@ const initialState = {
     heroesLoadingStatus: 'idle',
     filters: [],
     filtersLoadingStatus: 'idle',
+    activeFilter: 'all',
+    filteredHeroes: [],
     heroName: '',
     heroAbility: '',
     heroElement: '',
@@ -42,6 +44,20 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 filtersLoadingStatus: 'error'
             }
+        case 'FILTER_SET': {
+            return {
+                ...state,
+                activeFilter: action.payload,
+            }
+        }
+        case 'FILTER_HEROES': {
+            return {
+                ...state,
+                filteredHeroes: state.activeFilter === 'all' ?
+                                state.heroes :
+                                state.heroes.filter(hero => hero.element === state.activeFilter)
+            }
+        }
         case 'HEROES_DELETE':
             return {
                 ...state,

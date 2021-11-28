@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
-import { heroeAbilityChange, heroNameChange, heroElementChange, heroCreateNew, filterFetched, filterFetchingError, filterFetching } from "../../actions";
+import { heroeAbilityChange, heroNameChange, heroElementChange, heroCreateNew } from "../../actions";
 
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {heroName, heroAbility, heroElement, filtersLoadingStatus, filters} = useSelector(state => state);
+    const {heroName, heroAbility, heroElement } = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -28,6 +28,10 @@ const HeroesAddForm = () => {
         e.preventDefault();
         dispatch(heroCreateNew(newHero));
         request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero));
+
+        dispatch(heroNameChange(''));
+        dispatch(heroeAbilityChange(''));
+        dispatch(heroElementChange(''));
     }
 
     return (
@@ -70,10 +74,10 @@ const HeroesAddForm = () => {
                     id="element" 
                     name="element">
                     <option >Я владею элементом...</option>
-                    <option value='Огонь'>Огонь</option>
-                    <option value='Вода'>Вода</option>
-                    <option value='Земля'>Земля</option>
-                    <option value='Воздух'>Воздух</option>
+                    <option value='fire'>Огонь</option>
+                    <option value='water'>Вода</option>
+                    <option value='earth'>Земля</option>
+                    <option value='wind'>Воздух</option>
                 </select>
             </div>
 
