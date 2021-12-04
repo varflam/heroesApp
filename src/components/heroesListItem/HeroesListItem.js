@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import {useHttp} from '../../hooks/http.hook';
+import { useCallback } from 'react';
 
 import { heroesDelete } from '../../actions';
 
@@ -8,11 +9,12 @@ const HeroesListItem = ({id, name, description, element}) => {
     const dispatch = useDispatch();
     const {request} = useHttp();
 
-    const onDeleteChar = (id) => {
-        dispatch(heroesDelete(id));
-
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE');
-    }
+    const onDeleteChar = useCallback((id) => {
+        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+        .then(dispatch(heroesDelete(id)))
+        .catch(err => console.log(err));
+        // eslint-disable-next-line
+    }, [request]);
 
     let elementClassName;
 

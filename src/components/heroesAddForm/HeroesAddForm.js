@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
-import { heroeAbilityChange, heroNameChange, heroElementChange, heroCreateNew } from "../../actions";
+import { heroCreateNew } from "../../actions";
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -14,12 +15,16 @@ import { heroeAbilityChange, heroNameChange, heroElementChange, heroCreateNew } 
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {heroName, heroAbility, heroElement, filters } = useSelector(state => state);
+    const [heroName, changeHeroName] = useState('');
+    const [heroAbility, changeHeroAbility] = useState('');
+    const [heroElement, changeHeroElement] = useState('');
+    const { filters } = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     const onInputChange = (e, func) => {
-        dispatch(func(e.target.value));
+        const value = e.target.value;
+        func(value);
     }
 
     const onAddHero = (e) => {
@@ -36,9 +41,9 @@ const HeroesAddForm = () => {
         request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
                .catch(err => console.log(err));
 
-        dispatch(heroNameChange(''));
-        dispatch(heroeAbilityChange(''));
-        dispatch(heroElementChange(''));
+        changeHeroName('');
+        changeHeroAbility('');
+        changeHeroElement('');
     }
 
     const renderOptions = (arr) => {
@@ -61,7 +66,7 @@ const HeroesAddForm = () => {
                 <input 
                     required
                     value={heroName}
-                    onChange={(e) => onInputChange(e, heroNameChange)}
+                    onChange={(e) => onInputChange(e, changeHeroName)}
                     type="text" 
                     name="name" 
                     className="form-control" 
@@ -74,7 +79,7 @@ const HeroesAddForm = () => {
                 <textarea
                     required
                     value={heroAbility}
-                    onChange={(e) => onInputChange(e, heroeAbilityChange)}
+                    onChange={(e) => onInputChange(e, changeHeroAbility)}
                     name="text" 
                     className="form-control" 
                     id="text" 
@@ -87,7 +92,7 @@ const HeroesAddForm = () => {
                 <select 
                     required
                     value={heroElement}
-                    onChange={(e) => onInputChange(e, heroElementChange)}
+                    onChange={(e) => onInputChange(e, changeHeroElement)}
                     className="form-select" 
                     id="element" 
                     name="element">

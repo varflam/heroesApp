@@ -50,27 +50,6 @@ export const heroesDelete = (id) => {
     }
 }
 
-export const heroNameChange = (value) => {
-    return {
-        type: 'HERO_NAME_CHANGE',
-        payload: value
-    }
-}
-
-export const heroeAbilityChange = (value) => {
-    return {
-        type: 'HERO_ABILITY_CHANGE',
-        payload: value
-    }
-}
-
-export const heroElementChange = (value) => {
-    return {
-        type: 'HERO_ELEMENT_CHANGE',
-        payload: value
-    }
-}
-
 export const heroCreateNew = (hero) => {
     return {
         type: 'HERO_CREATE_NEW',
