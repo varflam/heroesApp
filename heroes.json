@@ -23,12 +23,6 @@
       "name": "Новый герой",
       "description": "Уже многое умею",
       "element": "wind"
-    },
-    {
-      "id": "0bb331a2-a1e9-4d22-8d3e-c889e14b7ae2",
-      "name": "Последний герой",
-      "description": "Выявляю баги",
-      "element": "fire"
     }
   ],
   "filters": [
