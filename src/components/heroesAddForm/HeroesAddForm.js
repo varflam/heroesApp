@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
 import { heroCreateNew } from '../heroesList/heroesSlice';
+import { selectAll } from "../heroesFilters/heroesFilterSlice";
+import store from '../../store';
 
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
@@ -18,7 +20,7 @@ const HeroesAddForm = () => {
     const [heroName, changeHeroName] = useState('');
     const [heroAbility, changeHeroAbility] = useState('');
     const [heroElement, changeHeroElement] = useState('');
-    const { filters } = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
     const dispatch = useDispatch();
     const {request} = useHttp();
 

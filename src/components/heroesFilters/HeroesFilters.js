@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import { useHttp } from "../../hooks/http.hook";
 import Spinner from "../spinner/Spinner";
-import { filterSet } from "./heroesFilterSlice";
-import {fetchFilters} from './heroesFilterSlice';
+import { fetchFilters, filterSet, selectAll } from "./heroesFilterSlice";
+import store from '../../store';
 
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -14,11 +13,11 @@ import {fetchFilters} from './heroesFilterSlice';
 const HeroesFilters = () => {
 
     const dispatch = useDispatch();
-    const {request} = useHttp();
-    const {activeFilter, filters, filtersLoadingStatus} = useSelector(state => state.filters);
+    const {activeFilter, filtersLoadingStatus} = useSelector(state => state.filters);
+    const filters = selectAll(store.getState());
 
     useEffect(() => {
-        dispatch(fetchFilters(request));
+        dispatch(fetchFilters());
         // eslint-disable-next-line
     }, [])
 
