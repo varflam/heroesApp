@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { fetchHeroes, filteredHeroesSelector } from './heroesSlice';
+import { useGetHeroesQuery } from '../../api/apiSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -14,18 +14,27 @@ import './heroesList.sass';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => { 
-    const { heroesLoadingStatus } = useSelector(state => state);
-    const filteredHeroes = useSelector(filteredHeroesSelector);
-    const dispatch = useDispatch();
+    const activeFilter = useSelector(state => state.filters.activeFilter);
 
-    useEffect(() => {
-        dispatch(fetchHeroes());
-        // eslint-disable-next-line
-    }, []);
+    const {
+        data: heroes = [],
+        isLoading,
+        isError
+    } = useGetHeroesQuery();
 
-    if (heroesLoadingStatus === "loading") {
+    const filteredHeroes = useMemo(() => {
+        const filteredHeroes = heroes.slice();
+
+        if (activeFilter === 'all') {
+            return filteredHeroes;
+        } else {
+            return filteredHeroes.filter(item => item.element === activeFilter);
+        }
+    }, [activeFilter, heroes]);
+
+    if (isLoading) {
         return <Spinner/>;
-    } else if (heroesLoadingStatus === "error") {
+    } else if (isError) {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
