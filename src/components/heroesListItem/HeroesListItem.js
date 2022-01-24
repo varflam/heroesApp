@@ -1,20 +1,15 @@
-import { useDispatch } from 'react-redux';
-import {useHttp} from '../../hooks/http.hook';
 import { useCallback } from 'react';
 
-import { heroesDelete } from '../heroesList/heroesSlice';
+import { useDeleteHeroMutation } from '../../api/apiSlice';
 
 const HeroesListItem = ({id, name, description, element}) => {
 
-    const dispatch = useDispatch();
-    const {request} = useHttp();
+    const [deleteHero]  = useDeleteHeroMutation();
 
     const onDeleteChar = useCallback((id) => {
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-        .then(dispatch(heroesDelete(id)))
-        .catch(err => console.log(err));
+        deleteHero(id);
         // eslint-disable-next-line
-    }, [request]);
+    }, []);
 
     let elementClassName;
 

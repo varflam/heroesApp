@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 import { v4 as uuidv4 } from 'uuid';
-import { heroCreateNew } from '../heroesList/heroesSlice';
+import { useAddHeroMutation } from '../../api/apiSlice';
 import { selectAll } from "../heroesFilters/heroesFilterSlice";
 import store from '../../store';
 
@@ -21,8 +19,7 @@ const HeroesAddForm = () => {
     const [heroAbility, changeHeroAbility] = useState('');
     const [heroElement, changeHeroElement] = useState('');
     const filters = selectAll(store.getState());
-    const dispatch = useDispatch();
-    const {request} = useHttp();
+    const [addHero] = useAddHeroMutation();
 
     const onInputChange = (e, func) => {
         const value = e.target.value;
@@ -30,6 +27,7 @@ const HeroesAddForm = () => {
     }
 
     const onAddHero = (e) => {
+        e.preventDefault();
         const id = uuidv4();
 
         let newHero = {
@@ -38,10 +36,7 @@ const HeroesAddForm = () => {
             description: heroAbility,
             element: heroElement
         };
-        e.preventDefault();
-        dispatch(heroCreateNew(newHero));
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
-               .catch(err => console.log(err));
+        addHero(newHero).unwrap();
 
         changeHeroName('');
         changeHeroAbility('');

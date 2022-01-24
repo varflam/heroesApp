@@ -18,7 +18,7 @@ const store = configureStore({
         filters,
         [heroesApiSlice.reducerPath]: heroesApiSlice.reducer
     },
-    middlewares: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, heroesApiSlice.middleware),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, heroesApiSlice.middleware),
     devTools: process.env.NODE_ENV !== 'production'
 });
 
