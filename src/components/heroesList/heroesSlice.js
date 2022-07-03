@@ -7,7 +7,7 @@ const initialState = heroesAdapter.getInitialState({
 });
 
 
-export const fetchHeroes = createAsyncThunk(
+const fetchHeroes = createAsyncThunk(
     'heroes/fetchHeroes',
     () => {
         const {request} = useHttp();
